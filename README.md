@@ -30,7 +30,7 @@
 > 촬영 사이의 촬영 딜레이(Shot DelayTime)는 전역적으로 설정하도록 빠져있음  
 > 촬영 방식(추가촬영, 재촬영 여부) 은 [Product](/Product.md)에서 정의하고 있습니다.
 
-[^1]: 사진 레이아웃에 따라 촬영 횟수가 달라짐. 출력물 `캔버스에 배치될 촬영사진수`( PhotoLaoutCount ) 보다 같거나 커야함.
+[^1]: 프레임의 레이아웃에 따라 촬영 횟수가 달라짐. 출력물 `캔버스에 배치될 촬영사진수`( PhotoLaoutCount ) 보다 같거나 커야함.
 
 #
 
@@ -41,28 +41,27 @@
 (출력물 구성 단계별 수행해야하는 우선 순위 순으로 나열합니다.)
 > 실제 출력물 사이즈를 추상화해 표현한 출력물과 같은 비율의 배치 공간을 `캔버스(Canvas)` 라고 정의합니다. 
 
-- 캔버스 가로 사이즈 (CanvasTotalWidth)
-- 캔버스 세로 사이즈 (CanvasTotalHeight)
+- 캔버스 가로 사이즈 (CanvasWidth)
+- 캔버스 세로 사이즈 (CanvasHeight)
 - 캔버스에 배치될 촬영사진 수 (PhotoLayoutCount)
-- 첫번째 사진 경로 (Photo.1.Source)
-- 첫번째 사진 영역 가로 사이즈 (Photo.1.Width)
-- 첫번재 사진 영역 세로 사이즈 (Photo.1.Height)
-- 첫번째 사진 캔버스 배치 좌표:x (Photo.1.PosX)
-- 첫번째 사진 캔버스 배치 좌표:y (Photo.1.PosY)
-- 배경 이미지 경로 (BGImageSource)[^2]
+- 첫번째 사진 경로 (PhotoList.1.Source)
+- 첫번째 사진 영역 가로 사이즈 (PhotoList.1.Width)
+- 첫번재 사진 영역 세로 사이즈 (PhotoList.1.Height)
+- 첫번째 사진 캔버스 배치 좌표:x (PhotoList.1.PosX)
+- 첫번째 사진 캔버스 배치 좌표:y (PhotoList.1.PosY)
+- 배경 이미지 경로 (BGImage.Source)[^2]
 - 배경 이미지 캔버스 배치 좌표:x (BGImage.PosX)[^3]
 - 배경 이미지 캔버스 배치 좌표:y (BGImage.PosY)
-- 옵션 레이어 이미지 경로 (OptionLayerImages.1.source)[^4]
-- 옵션 레이어 이미지 가로 사이즈 (OptionLayerImages.1.Width)
-- 옵션 레이어 이미지 세로 사이즈 (OptionLayerImages.1.Height)
-- 옵션 레이어 이미지 캔버스 좌표:x (OptionLayerImages.1.PosX)
-- 옵션 레이어 이미지 캔버스 좌표:y (OptionLayerImages.1.PosY)
+- 옵션 레이어 이미지 경로 (OptionList.1.Source)[^4]
+- 옵션 레이어 이미지 가로 사이즈 (OptionList.1.Width)
+- 옵션 레이어 이미지 세로 사이즈 (OptionList.1.Height)
+- 옵션 레이어 이미지 캔버스 좌표:x (OptionList.1.PosX)
+- 옵션 레이어 이미지 캔버스 좌표:y (OptionList.1.PosY)
 
 > 레이어 겹침 순서는 아래부터   
 > 캔버스 -> 촬영 사진 -> 배경이미지 -> 옵션레이어 이미지    
 > 순서 입니다.
 
-!!!!프레임 타이틀 이미지, 찍은 사진 경로 등이 빠져있음.(출근해서 수정하자.)
 
 [^2]: 배경이미지의 사진 배치 영역은 실제 배치될 사진의 영역 사이즈보다 같거나 작아야 합니다. 예를들어, 직사각형 범위의 사진 사이즈보다 더 작은 하트모양의 배치영역을 가진 배경이미지를 덮으면. 하트모양 프레임으로 사진을 찍은것을 표현할 수 있습니다.
 [^3]: 배경 이미지는 기본적으로 캔버스에 정확히 Fill 되는 사이즈로 설계되어야 하지만 사용자 정의 이미지 이거나, 오프셋을 주어야 할 경우를 대비해 배치 좌표를 설정함
@@ -76,16 +75,63 @@
 | ---------- | ---------- | ---------------------------------------- | ---------- |
 | Id | int  | 식별자 | |
 | Title | string | 이름 |  |
-| Description | string | 프레임 설명  |
-| IconImageSource | string | 프레임 아이콘 이미지 |
-| ShootData | class | [사진 촬영 데이터](#사진-촬영-데이터) | 
-| CanvasData | class | [출력 구성 데이터](#출력-구성-데이터) |
+| Description | string | 프레임 설명  | |
+| IconImageSource | string | 프레임 대표 아이콘 이미지 | 상품 선택 후, 프레임을 고를 때 표현할 아이콘|
+| [ShootData](#shootdata-속성) | class | [사진 촬영 데이터](#사진-촬영-데이터) | |
+| [CanvasData](#canvasdata-속성) | class | [출력 구성 데이터](#출력-구성-데이터) | |
 
 ## ShootData 속성
 
 | 필드명 | 자료형 | 설명 | 비고 |
-| --- | --- | --- | ---|
+| --- | --- | --- | --- |
 | PictureWidth | uint | 캔버스 가로 사이즈 | 단위에 따라서 자료형은 적절히 수정 예정. |
 | PictureHeight | uint | 캔버스 세로 사이즈 | 단위에 따라서 자료형은 적절히 수정 예정. |
-| ShootCount | uint | 촬영 횟수[^1] |
+| ShootCount | uint | 촬영 횟수[^1] | |
 
+## CanvasData 속성
+
+| 필드명 | 자료형 | 설명 | 비고 |
+| --- | --- | --- | --- |
+| CanvasWidth | uint | 캔버스 너비 | 추상화에 적합한 단위로 기술 |
+| CanvasHeight | uint | 캔버스 높이 | 추상화에 적합단 단위로 기술 |
+| PhotoLayoutCount | uint | 캔버스에 배치될 촬영사진 수 | |
+| PhotoList | [PhotoLayout](#photolayout-속성)[ ] | 캔버스에 배치될 사진 레이아웃 리스트 | `PhotoLayoutCount`만큼의 수량으로 생성|
+| BGImage | [BGImageLayout](#bgimagelayout-속성) class | 캔버스에 배치될 배경 이미지 데이터 | 배경 이미지 소스는 1개로 단일함 |
+| OptionLayerList | [OptionLayer](#optionlayer-속성)[ ] | 캔버스에 배치될 옵션 이미지 데이터 | 아직은 안씀. |
+
+## PhotoLayout 속성
+
+| 필드명 | 자료형 | 설명 | 비고 |
+| --- | --- | --- | --- |
+| SourceId | int | 촬영 원본 리스트 인덱스 | 동적 할당* - 현재 레이아웃에 저장된 리소스를 역 참조 하기 위해 저장. |
+| Source | string | 사진 리소스 경로 | 동적 할당* |
+| Width | uint | 사진 표현 너비 | 실제 캔버스 상에 표현될 너비 |
+| Height | uint | 사진 표현 높이 | 실제 캔버스 상에 표현될 높이 |
+| PosX | int | 캔버스 배치 x좌표 | 실제 캔버스 상에 배치될 상대 좌표 |
+| PosY | int | 캔버스 배치 y좌표 | 실제 캔버스 상에 배치될 상대 좌표 |
+
+## BGImageLayout 속성
+
+ 백그라운드 이미지는 사진 레이아웃 부분이 알파처리된 이미지를 사용 합니다. 프레임 하나에 배경은 하나만 배치 됩니다.
+
+| 필드명 | 자료형 | 설명 | 비고 |
+| --- | --- | --- | --- |
+| SourceId | int | 배경 이미지 데이터의 인덱스 | 필요 없을시 삭제.|
+| Name | string | 배경 이름 |  |
+| Source | string | 배경 이미지 리소스 경로 | |
+| PosX | int | 캔버스 배치 x좌표 | 실제 캔버스 상에 배치될 상대 좌표 |
+| PosY | int | 캔버스 배치 y좌표 | 실제 캔버스 상에 배치될 상대 좌표 |
+> 캔버스 사이즈와 정확히 Fill되는 사이즈로 이미지를 사용한다는 전제 하에 이미지 소스 `Height`,`Width` 가 `CanvasHeight`,`CanvasWidth` 와 각각 동일 하기 때문에 추가하지 않았습니다. 필요시 추가
+
+## OptionLayer 속성
+
+>현재는 기획상 필요하지 않으나. 추가로 캔버스 최상단 레이어에 이미지를 붙이기 위해 추상화한 속성입니다.
+
+| 필드명 | 자료형 | 설명 | 비고 |
+| --- | --- | --- | --- |
+| SourceId | int | 옵션이미지 데이터 인덱스 | 동적 할당* - 현재 레이아웃에 저장된 리소스를 역 참조 하기 위해 저장. |
+| Source | string | 이미지 리소스 경로 | 동적 할당* - 가장 상단에 추가로 붙일 이미지 경로 |
+| Width | uint | 이미지 표현 너비 | 실제 캔버스 상에 표현될 너비 |
+| Height | uint | 이미지 표현 높이 | 실제 캔버스 상에 표현될 높이 |
+| PosX | int | 캔버스 배치 x좌표 | 실제 캔버스 상에 배치될 상대 좌표 |
+| PosY | int | 캔버스 배치 y좌표 | 실제 캔버스 상에 배치될 상대 좌표 |
