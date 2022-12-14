@@ -97,7 +97,7 @@
 | PhotoLayoutCount | uint | 캔버스에 배치될 촬영사진 수 | |
 | PhotoList | [PhotoLayout](#photolayout-속성)[ ] | 캔버스에 배치될 사진 레이아웃 리스트 | `PhotoLayoutCount`만큼의 수량으로 생성|
 | BGImage | [BGImageLayout](#bgimagelayout-속성) class | 캔버스에 배치될 배경 이미지 데이터 | 배경 이미지 소스는 1개로 단일함 |
-| OptionLayerList | [OptionLayer](#optionlayer-속성)[ ] | 캔버스에 배치될 옵션 이미지 데이터 | 아직은 안씀. |
+| OptionLayerList | [OptionLayer](#optionlayer-속성)[ ] | 캔버스에 배치될 옵션 이미지 리스트 | 아직은 안씀. |
 
 ## PhotoLayout 속성
 
@@ -117,7 +117,7 @@
 | 필드명 | 자료형 | 설명 | 비고 |
 | --- | --- | --- | --- |
 | SourceId | int | 배경 이미지 데이터의 인덱스 | 필요 없을시 삭제.|
-| Name | string | 배경 이름 |  |
+| Name | string | 배경 이름 | 필요 없을시 삭제. |
 | Source | string | 배경 이미지 리소스 경로 | |
 | PosX | int | 캔버스 배치 x좌표 | 실제 캔버스 상에 배치될 상대 좌표 |
 | PosY | int | 캔버스 배치 y좌표 | 실제 캔버스 상에 배치될 상대 좌표 |
